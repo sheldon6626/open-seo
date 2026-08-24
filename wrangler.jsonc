@@ -21,7 +21,10 @@
   ],
   "vars": {
     "AUTH_MODE": "local_noauth",
-    "DATAFORSEO_API_KEY": "aW5mb0BkYXNpbmZhbnMuY29tOmE2Njc4YmJjN2JjYjhkZjU="
+    "DATAFORSEO_API_KEY": "aW5mb0BkYXNpbmZhbnMuY29tOmE2Njc4YmJjN2JjYjhkZjU=",
+    "OPENROUTER_BASE_URL": "https://cliapi.now9888.com/v1",
+    "OPENROUTER_MODEL": "gemini-3.7-flash-high",
+    "OPENROUTER_API_KEY": "sk-kAkHDo7RggjQ3uZ01"
   },
   "workflows": [
     {

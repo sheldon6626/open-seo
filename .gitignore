@@ -44,3 +44,6 @@ dist-sourcemaps/
 
 # Alchemy local state + bundle artifacts (SaaS deploys)
 .alchemy/
+
+# Temporary/nested directories
+open-seo/

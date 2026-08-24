@@ -131,6 +131,13 @@ export const LOCATION_OPTIONS: readonly LocationOption[] = [
   { code: 2120, label: "Cameroon", shortLabel: "CM", languageCode: "fr" },
   { code: 2124, label: "Canada", shortLabel: "CA", languageCode: "en" },
   { code: 2152, label: "Chile", shortLabel: "CL", languageCode: "es" },
+  {
+    code: 2156,
+    label: "China",
+    shortLabel: "CN",
+    languageCode: "zh-CN",
+    googleAdsOnly: true,
+  },
   { code: 2170, label: "Colombia", shortLabel: "CO", languageCode: "es" },
   { code: 2188, label: "Costa Rica", shortLabel: "CR", languageCode: "es" },
   { code: 2384, label: "Cote d'Ivoire", shortLabel: "CI", languageCode: "fr" },
@@ -787,9 +794,11 @@ const MULTI_LANGUAGE_LOCATIONS: Record<number, readonly string[]> = {
   2012: ["ar", "fr"], // Algeria
   2056: ["de", "fr", "nl"], // Belgium
   2124: ["en", "fr"], // Canada
+  2156: ["zh-CN", "zh-TW", "en"], // China
+  2158: ["zh-TW", "zh-CN", "en"], // Taiwan
   2196: ["el", "en"], // Cyprus
   2300: ["el", "en"], // Greece
-  2344: ["en", "zh-TW"], // Hong Kong
+  2344: ["en", "zh-TW", "zh-CN"], // Hong Kong
   2356: ["en", "hi"], // India
   2360: ["en", "id"], // Indonesia
   2376: ["ar", "he"], // Israel
@@ -797,12 +806,12 @@ const MULTI_LANGUAGE_LOCATIONS: Record<number, readonly string[]> = {
   2504: ["ar", "fr"], // Morocco
   2586: ["en", "ur"], // Pakistan
   2608: ["en", "tl"], // Philippines
-  2702: ["en", "zh-CN"], // Singapore
+  2702: ["en", "zh-CN", "zh-TW"], // Singapore
   2756: ["de", "fr", "it"], // Switzerland
   2784: ["ar", "en"], // United Arab Emirates
   2804: ["ru", "uk"], // Ukraine
   2818: ["ar", "en"], // Egypt
-  2840: ["en", "es"], // United States
+  2840: ["en", "es", "zh-CN", "zh-TW"], // United States
   2704: ["en", "vi"], // Vietnam
 };
 

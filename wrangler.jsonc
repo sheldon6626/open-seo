@@ -29,7 +29,7 @@
     "OPENROUTER_MODEL": "gemini-3.7-flash-high",
     "OPENROUTER_API_KEY": "sk-kAkHDo7RggjQ3uZ01",
     "TEAM_DOMAIN": "https://kuul.cloudflareaccess.com",
-    "POLICY_AUD": "193911a9-35b6-4ee6-8853-533386566867"
+    "POLICY_AUD": "7ba6dd65-4b8e-42d0-ba62-948046548c5f"
   },
   "workflows": [
     {

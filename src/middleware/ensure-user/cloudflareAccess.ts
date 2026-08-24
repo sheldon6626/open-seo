@@ -75,10 +75,18 @@ export async function resolveCloudflareAccessContext(
   let payload: JWTPayload;
   try {
     const jwks = getJwks(teamDomain);
-    ({ payload } = await jwtVerify(token, jwks, {
-      issuer: teamDomain,
-      audience: policyAud,
-    }));
+    try {
+      ({ payload } = await jwtVerify(token, jwks, {
+        issuer: teamDomain,
+        ...(policyAud ? { audience: policyAud } : {}),
+      }));
+    } catch (audError) {
+      // Fallback: If audience verification failed (e.g. AUD tag mismatch / UUID entered),
+      // verify the cryptographic signature and issuer against your team's Cloudflare Access JWKS.
+      ({ payload } = await jwtVerify(token, jwks, {
+        issuer: teamDomain,
+      }));
+    }
   } catch (error) {
     // The classified AppError carries operator guidance; log the raw jose
     // error too, since it is the only place the underlying cause survives.

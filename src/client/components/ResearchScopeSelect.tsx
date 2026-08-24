@@ -18,7 +18,7 @@ type Props = {
 };
 
 /**
- * The shared research-scope selector: Exact URL / Subfolder / Domain /
+ * The shared research-scope selector: 精确网址 (Exact URL) / 子目录路径 (Subfolder) / Domain /
  * Subdomains. A custom dropdown (not a native select) so each option can
  * explain what it covers. Every research input that accepts a URL or domain
  * renders this next to the input so scope is explicit instead of inferred.

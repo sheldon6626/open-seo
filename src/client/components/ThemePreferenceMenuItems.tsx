@@ -6,9 +6,9 @@ const THEME_OPTIONS: {
   label: string;
   icon: typeof Sun;
 }[] = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "跟随系统", icon: Monitor },
+  { value: "light", label: "浅色模式", icon: Sun },
+  { value: "dark", label: "深色模式", icon: Moon },
 ];
 
 export function ThemePreferenceMenuItems() {
@@ -17,7 +17,7 @@ export function ThemePreferenceMenuItems() {
   return (
     <>
       <li className="menu-title pt-2">
-        <span>Theme</span>
+        <span>主题外观</span>
       </li>
 
       <li>

@@ -51,10 +51,9 @@ function AiPage() {
   return (
     <div className="h-full overflow-auto bg-base-100 px-4 py-12 md:px-6 md:py-16 pb-24 md:pb-12">
       <div className="mx-auto max-w-3xl">
-        <h1 className="text-2xl font-semibold">AI & MCP</h1>
+        <h1 className="text-2xl font-semibold">AI 与 MCP 集成</h1>
         <p className="mt-2 text-sm text-base-content/70 leading-relaxed">
-          Connect your AI agent to OpenSEO. Run keyword research, SERP analysis,
-          domain lookups, and backlink reviews from your editor or chat.
+          将你的 AI Agent 连接至 OpenSEO。在你的编辑器（如 Codex、Claude Code、Cursor）或对话中直接运行关键词研究、SERP 分析、域名调研与外链审查。
         </p>
 
         {getAuthMode(import.meta.env.AUTH_MODE) === "cloudflare_access" ? (

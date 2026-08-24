@@ -33,7 +33,7 @@ const HERO_COPY: Record<
   { title: string; body: string; cta: string }
 > = {
   domain: {
-    title: "What site are you working on?",
+    title: "你正在优化的网站是哪个？",
     body: "Set your project's domain and every card on this page starts working for it — backlinks and audits.",
     cta: "Save",
   },

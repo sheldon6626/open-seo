@@ -17,9 +17,9 @@ const THEME_OPTIONS: {
   label: string;
   icon: typeof Sun;
 }[] = [
-  { value: "system", label: "System", icon: Monitor },
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
+  { value: "system", label: "跟随系统", icon: Monitor },
+  { value: "light", label: "浅色模式", icon: Sun },
+  { value: "dark", label: "深色模式", icon: Moon },
 ];
 
 function SettingsPage() {
@@ -51,14 +51,14 @@ function SettingsPage() {
   return (
     <div className="h-full overflow-auto bg-base-100 px-4 py-8 pb-24 md:px-6 md:py-12 md:pb-8">
       <div className="mx-auto max-w-3xl space-y-10">
-        <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-bold tracking-tight">系统设置</h1>
 
         <section className="space-y-3">
           <h2 className="text-sm font-medium text-base-content/50">
-            Appearance
+            界面外观
           </h2>
           <div className="flex items-center justify-between gap-6">
-            <span className="text-sm">Theme</span>
+            <span className="text-sm">主题外观</span>
             <div
               role="radiogroup"
               aria-label="Theme preference"
@@ -120,9 +120,9 @@ function SettingsPage() {
           </>
         ) : (
           <section className="space-y-3">
-            <h2 className="text-sm font-medium text-base-content/50">About</h2>
+            <h2 className="text-sm font-medium text-base-content/50">关于</h2>
             <div className="flex items-center justify-between gap-6">
-              <span className="text-sm">Version</span>
+              <span className="text-sm">当前版本</span>
               <span className="font-mono text-sm text-base-content/60">
                 v{version}
               </span>

@@ -47,7 +47,7 @@ export function KeywordResearchSearchBar({ controller }: Props) {
                   <textarea
                     className="grow min-w-0 resize-none bg-transparent text-sm leading-6 outline-none placeholder:text-base-content/40"
                     rows={rows}
-                    placeholder="Enter a keyword"
+                    placeholder="输入关键词（支持多行输入）"
                     value={field.state.value}
                     onChange={(event) => field.handleChange(event.target.value)}
                     onKeyDown={(event) => {
@@ -88,7 +88,7 @@ export function KeywordResearchSearchBar({ controller }: Props) {
                 >
                   {RESULT_LIMITS.map((limit) => (
                     <option key={limit} value={limit}>
-                      {limit} results
+                      {limit} 条结果
                     </option>
                   ))}
                 </select>
@@ -104,10 +104,10 @@ export function KeywordResearchSearchBar({ controller }: Props) {
                     field.handleChange(normalizeKeywordMode(event.target.value))
                   }
                 >
-                  <option value="auto">Auto</option>
-                  <option value="related">Related keywords</option>
-                  <option value="suggestions">Suggestions</option>
-                  <option value="ideas">Ideas</option>
+                  <option value="auto">自动模式 (Auto)</option>
+                  <option value="related">相关关键词 (Related)</option>
+                  <option value="suggestions">搜索建议 (Suggestions)</option>
+                  <option value="ideas">关键词拓展 (Ideas)</option>
                 </select>
               )}
             </controlsForm.Field>
@@ -116,7 +116,7 @@ export function KeywordResearchSearchBar({ controller }: Props) {
               type="submit"
               className="btn btn-primary w-full px-6 lg:w-auto lg:shrink-0"
             >
-              Search
+              搜索
             </button>
           </div>
         </form>
@@ -145,7 +145,7 @@ export function KeywordResearchSearchBar({ controller }: Props) {
                         }
                       />
                       <span className="text-sm font-medium text-base-content/80">
-                        Clickstream-refined volumes
+                        点击流精准搜索量
                       </span>
                     </label>
                     <div

@@ -18,10 +18,10 @@ import {
 } from "./shared";
 
 const ROLE_LABELS: Record<KeyPageRole, string> = {
-  hub: "Hub page",
-  spoke: "Supporting page",
-  money: "Money page",
-  other: "Other",
+  hub: "核心主题页 (Hub)",
+  spoke: "支撑子页 (Spoke)",
+  money: "高转化/变现页",
+  other: "其他页面",
 };
 
 export function KeyPagesSection({

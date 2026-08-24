@@ -24,11 +24,18 @@ import {
   type ProjectContextData,
 } from "./shared";
 
+const SECTION_DISPLAY_LABELS: Record<ProjectContextSectionKey, string> = {
+  business_overview: "业务概况",
+  current_goal: "当前目标",
+  positioning: "市场定位",
+  writing_preferences: "内容与写作偏好",
+};
+
 const SECTION_HINTS: Record<ProjectContextSectionKey, string> = {
-  business_overview: "What you sell, who buys it, and where.",
-  current_goal: "What you're pushing for right now, and by when.",
-  positioning: "Why someone picks you over the alternatives.",
-  writing_preferences: "Voice, words to avoid, topics that are off-limits.",
+  business_overview: "你的产品/服务、目标客户与受众市场。",
+  current_goal: "当前阶段的核心 SEO/业务目标与达成时间。",
+  positioning: "相比竞品的核心优势与差异化卖点。",
+  writing_preferences: "品牌语调、禁用词汇与敏感话题偏好。",
 };
 
 const SECTION_PLACEHOLDERS: Record<ProjectContextSectionKey, string> = {

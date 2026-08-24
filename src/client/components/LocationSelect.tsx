@@ -112,7 +112,7 @@ export function LocationSelect({
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
       >
-        <span className="truncate">{selected?.label ?? "Select country"}</span>
+        <span className="truncate">{selected?.label ?? "选择国家/地区"}</span>
       </button>
 
       {open ? (
@@ -123,7 +123,7 @@ export function LocationSelect({
               ref={inputRef}
               type="text"
               className="grow min-w-0 bg-transparent text-sm outline-none placeholder:text-base-content/40"
-              placeholder="Search countries"
+              placeholder="搜索国家/地区"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);
@@ -140,7 +140,7 @@ export function LocationSelect({
           >
             {filtered.length === 0 ? (
               <li className="w-full break-all px-3 py-2 text-sm text-base-content/50">
-                No countries match “{query.trim()}”
+                无匹配的国家/地区 “{query.trim()}”
               </li>
             ) : (
               filtered.map((option, index) => {

@@ -154,13 +154,13 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
           <div role="tablist" className="tabs tabs-border w-full">
             <SidebarViewTab
               icon={LayoutGrid}
-              label="Browse"
+              label="浏览"
               active={view === "browse"}
               onClick={openBrowse}
             />
             <SidebarViewTab
               icon={MessageCircle}
-              label="Chat"
+              label="对话"
               active={view === "chat"}
               onClick={openChat}
             />
@@ -238,7 +238,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
     <div className="shrink-0 border-t border-base-300 px-2 py-2 pb-safe">
       <SidebarNavLink
         icon={CircleHelp}
-        label="Help & Community"
+        label="帮助与社区"
         onNavigate={onNavigate}
         linkProps={{ to: "/support" }}
       />
@@ -263,14 +263,14 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
             <li>
               <Link to="/settings" onClick={closeMenu}>
                 <Settings className="h-4 w-4" />
-                Settings
+                系统设置
               </Link>
             </li>
             {isHostedMode ? (
               <li>
                 <Link to={BILLING_ROUTE} onClick={closeMenu}>
                   <CreditCard className="h-4 w-4" />
-                  Billing
+                  账单管理
                 </Link>
               </li>
             ) : null}
@@ -288,7 +288,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
                     onClick={() => signOutAndRedirect()}
                   >
                     <LogOut className="h-4 w-4" />
-                    Sign out
+                    退出登录
                   </button>
                 </li>
               </>
@@ -298,7 +298,7 @@ function SidebarFooter({ onNavigate }: { onNavigate?: () => void }) {
       ) : (
         <SidebarNavLink
           icon={Settings}
-          label="Settings"
+          label="系统设置"
           onNavigate={onNavigate}
           linkProps={{ to: "/settings" }}
         />

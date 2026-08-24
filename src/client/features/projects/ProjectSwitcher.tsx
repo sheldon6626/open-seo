@@ -231,7 +231,7 @@ export function ProjectSwitcher({
         >
           <span className="flex min-w-0 flex-col">
             <span className="truncate text-sm font-medium text-base-content">
-              {activeProject?.name ?? "Select project"}
+              {activeProject?.name ?? "选择项目"}
             </span>
             {activeProject?.domain ? (
               <span className="truncate text-xs font-normal text-base-content/50">
@@ -268,7 +268,7 @@ export function ProjectSwitcher({
                   ref={searchInputRef}
                   type="text"
                   value={query}
-                  placeholder="Find project…"
+                  placeholder="搜索项目…"
                   aria-label="Filter projects"
                   aria-controls="project-switcher-listbox"
                   aria-activedescendant={
@@ -335,7 +335,7 @@ export function ProjectSwitcher({
               {filteredProjects.length === 0 ? (
                 <li className="menu-disabled">
                   <span className="text-base-content/50">
-                    No projects match “{query.trim()}”
+                    未找到匹配的项目 “{query.trim()}”
                   </span>
                 </li>
               ) : null}
@@ -359,7 +359,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <Plus className="size-4" />
-                New project
+                新建项目
               </button>
             </li>
             <li>
@@ -371,7 +371,7 @@ export function ProjectSwitcher({
                 }}
               >
                 <FolderCog className="size-4" />
-                Manage projects
+                管理所有项目
               </Link>
             </li>
           </ul>

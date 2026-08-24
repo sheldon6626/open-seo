@@ -87,6 +87,9 @@ function parseTabInput(value: unknown): SearchTabInput | null {
       return null;
     }
     if (
+      value.resultLimit !== 30 &&
+      value.resultLimit !== 50 &&
+      value.resultLimit !== 100 &&
       value.resultLimit !== 150 &&
       value.resultLimit !== 300 &&
       value.resultLimit !== 500

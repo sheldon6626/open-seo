@@ -70,7 +70,14 @@ export function normalizeLegacyKeywordSearch(search: KeywordSearchParams): {
 }
 
 export function isResultLimit(value: number): value is ResultLimit {
-  return value === 150 || value === 300 || value === 500;
+  return (
+    value === 30 ||
+    value === 50 ||
+    value === 100 ||
+    value === 150 ||
+    value === 300 ||
+    value === 500
+  );
 }
 
 export function normalizeKeywordMode(value: string): KeywordMode {

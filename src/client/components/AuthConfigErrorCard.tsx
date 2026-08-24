@@ -20,7 +20,7 @@ export function AuthConfigErrorCard({
       <div className="card-body gap-4">
         <h2 className="card-title gap-2">
           <ShieldAlert className="size-5 text-error" />
-          Authentication setup required
+          身份验证配置提示
         </h2>
 
         <div className="alert alert-error">
@@ -46,7 +46,7 @@ export function AuthConfigErrorCard({
         <div className="card-actions justify-end">
           {onRetry ? (
             <button className="btn btn-ghost btn-sm" onClick={onRetry}>
-              Try Again
+              重试
             </button>
           ) : null}
           <a
@@ -55,7 +55,7 @@ export function AuthConfigErrorCard({
             target="_blank"
             rel="noreferrer"
           >
-            Open Setup Guide
+            查看配置指南
           </a>
         </div>
       </div>

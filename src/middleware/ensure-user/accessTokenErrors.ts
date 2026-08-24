@@ -1,4 +1,4 @@
-import { errors as joseErrors } from "jose";
+import { decodeJwt, errors as joseErrors } from "jose";
 import { AppError } from "@/server/lib/errors";
 
 // Maps a jwtVerify failure to the right AppError. Config mistakes (wrong
@@ -7,7 +7,7 @@ import { AppError } from "@/server/lib/errors";
 // UNAUTHENTICATED puts self-hosters in a sign-in loop with no signal anywhere,
 // since UNAUTHENTICATED is a non-reportable code. Token-level failures
 // (expired, bad signature) stay UNAUTHENTICATED: re-authenticating fixes them.
-export function classifyAccessVerificationError(error: unknown): AppError {
+export function classifyAccessVerificationError(error: unknown, token?: string): AppError {
   if (error instanceof joseErrors.JWTExpired) {
     return new AppError("UNAUTHENTICATED");
   }

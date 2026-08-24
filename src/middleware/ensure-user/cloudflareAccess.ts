@@ -84,7 +84,7 @@ export async function resolveCloudflareAccessContext(
     // error too, since it is the only place the underlying cause survives.
     console.error("Cloudflare Access token verification failed:", error);
 
-    throw classifyAccessVerificationError(error);
+    throw classifyAccessVerificationError(error, token);
   }
 
   const userId = typeof payload.sub === "string" ? payload.sub : null;

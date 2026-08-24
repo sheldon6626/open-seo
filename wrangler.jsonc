@@ -13,9 +13,15 @@
   "placement": {
     "mode": "smart"
   },
+  "routes": [
+    {
+      "pattern": "seo.now9888.com",
+      "custom_domain": true
+    }
+  ],
   "vars": {
     "AUTH_MODE": "local_noauth",
-    "DATAFORSEO_API_KEY": "114"
+    "DATAFORSEO_API_KEY": "aW5mb0BkYXNpbmZhbnMuY29tOmE2Njc4YmJjN2JjYjhkZjU="
   },
   "workflows": [
     {

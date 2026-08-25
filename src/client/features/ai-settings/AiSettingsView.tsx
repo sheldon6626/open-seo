@@ -86,7 +86,11 @@ export function AiSettingsView() {
       void queryClient.invalidateQueries({ queryKey: ["samAccessStatus"] });
     },
     onError: (err: unknown) => {
-      toast.error(err instanceof Error ? err.message : "保存设置失败");
+      const msg =
+        err instanceof Error && err.message !== "INTERNAL_ERROR"
+          ? err.message
+          : "保存设置失败，请稍后重试";
+      toast.error(msg);
     },
   });
 
@@ -99,17 +103,19 @@ export function AiSettingsView() {
         },
       }),
     onSuccess: (res) => {
-      if (res.success && res.models) {
+      if (res.success && Array.isArray(res.models)) {
+        const modelList: string[] = res.models;
         setFetchResult({
           success: true,
-          message: `成功从接口拉取到 ${res.count} 个可用模型！已加入模型列表。`,
+          message: `成功从接口拉取到 ${res.count ?? modelList.length} 个可用模型！已加入模型列表。`,
         });
-        const merged = Array.from(new Set([...customModels, ...res.models]));
+        const merged = Array.from(new Set([...customModels, ...modelList]));
         setCustomModels(merged);
-        if (res.models.length > 0 && !res.models.includes(defaultModel)) {
-          setDefaultModel(res.models[0]);
+        const first = modelList[0];
+        if (first && !modelList.includes(defaultModel)) {
+          setDefaultModel(first);
         }
-        toast.success(`成功拉取到 ${res.count} 个可用模型`);
+        toast.success(`成功拉取到 ${res.count ?? modelList.length} 个可用模型`);
       } else {
         setFetchResult({
           success: false,
@@ -120,7 +126,10 @@ export function AiSettingsView() {
       }
     },
     onError: (err: unknown) => {
-      const msg = err instanceof Error ? err.message : "请求失败";
+      const msg =
+        err instanceof Error && err.message !== "INTERNAL_ERROR"
+          ? err.message
+          : "拉取模型请求失败，请检查端点地址与网络连通性";
       setFetchResult({ success: false, message: msg });
       toast.error(msg);
     },
@@ -144,7 +153,10 @@ export function AiSettingsView() {
       }
     },
     onError: (err: unknown) => {
-      const msg = err instanceof Error ? err.message : "测试连接失败";
+      const msg =
+        err instanceof Error && err.message !== "INTERNAL_ERROR"
+          ? err.message
+          : "测试接口连通性失败，请检查端点地址与网络";
       setTestResult({ success: false, message: msg });
       toast.error(msg);
     },

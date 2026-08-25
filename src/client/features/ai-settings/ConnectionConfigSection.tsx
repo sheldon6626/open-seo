@@ -94,7 +94,7 @@ export function ConnectionConfigSection({
       <div className="flex flex-wrap items-center gap-3 pt-2">
         <button
           type="button"
-          className="btn btn-secondary btn-sm gap-1.5 shadow-sm"
+          className="btn btn-outline btn-sm gap-1.5 border-base-300 bg-base-100 text-base-content hover:border-primary hover:bg-primary/10 hover:text-primary shadow-sm"
           disabled={isFetchingModels || !baseUrl.trim()}
           onClick={onFetchModels}
         >
@@ -108,7 +108,7 @@ export function ConnectionConfigSection({
 
         <button
           type="button"
-          className="btn btn-neutral btn-sm gap-1.5"
+          className="btn btn-neutral btn-sm gap-1.5 shadow-sm"
           disabled={isTestingConnection || !baseUrl.trim()}
           onClick={onTestConnection}
         >

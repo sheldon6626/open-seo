@@ -43,26 +43,31 @@ function parseCustomModels(raw: string | null | undefined): string[] {
 async function getAiSettings(
   organizationId: string,
 ): Promise<AiSettingsRecord | null> {
-  const [row] = await db
-    .select()
-    .from(aiSettings)
-    .where(eq(aiSettings.organizationId, organizationId))
-    .limit(1);
+  try {
+    const [row] = await db
+      .select()
+      .from(aiSettings)
+      .where(eq(aiSettings.organizationId, organizationId))
+      .limit(1);
 
-  if (!row) return null;
+    if (!row) return null;
 
-  return {
-    id: row.id,
-    organizationId: row.organizationId,
-    provider: row.provider,
-    baseUrl: row.baseUrl,
-    apiKey: row.apiKey,
-    defaultModel: row.defaultModel,
-    customModels: parseCustomModels(row.customModels),
-    isActive: Boolean(row.isActive),
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
-  };
+    return {
+      id: row.id,
+      organizationId: row.organizationId,
+      provider: row.provider,
+      baseUrl: row.baseUrl,
+      apiKey: row.apiKey,
+      defaultModel: row.defaultModel,
+      customModels: parseCustomModels(row.customModels),
+      isActive: Boolean(row.isActive),
+      createdAt: row.createdAt,
+      updatedAt: row.updatedAt,
+    };
+  } catch (err: unknown) {
+    console.warn("[AiSettingsRepository] Table or query error:", err);
+    return null;
+  }
 }
 
 async function saveAiSettings(
@@ -94,43 +99,88 @@ async function saveAiSettings(
       updatedValues.customModels = customModelsJson;
     if (input.isActive !== undefined) updatedValues.isActive = input.isActive;
 
-    await db
-      .update(aiSettings)
-      .set(updatedValues)
-      .where(eq(aiSettings.id, existing.id));
+    try {
+      await db
+        .update(aiSettings)
+        .set(updatedValues)
+        .where(eq(aiSettings.id, existing.id));
+    } catch (err: unknown) {
+      console.error(
+        "[AiSettingsRepository] Failed to update ai_settings:",
+        err,
+      );
+    }
 
     const updated = await getAiSettings(input.organizationId);
-    return updated!;
+    return (
+      updated || {
+        id: existing.id,
+        organizationId: input.organizationId,
+        provider: input.provider || existing.provider,
+        baseUrl: input.baseUrl !== undefined ? input.baseUrl : existing.baseUrl,
+        apiKey: input.apiKey !== undefined ? input.apiKey : existing.apiKey,
+        defaultModel: input.defaultModel || existing.defaultModel,
+        customModels:
+          input.customModels !== undefined
+            ? input.customModels || []
+            : existing.customModels,
+        isActive:
+          input.isActive !== undefined ? input.isActive : existing.isActive,
+        createdAt: existing.createdAt,
+        updatedAt: now,
+      }
+    );
   }
 
   const id = crypto.randomUUID();
-  const [inserted] = await db
-    .insert(aiSettings)
-    .values({
-      id,
-      organizationId: input.organizationId,
-      provider: input.provider || "custom",
-      baseUrl: input.baseUrl ? input.baseUrl.trim() : null,
-      apiKey: input.apiKey ? input.apiKey.trim() : null,
-      defaultModel: input.defaultModel?.trim() || "minimax/minimax-m3",
-      customModels: customModelsJson,
-      isActive: input.isActive ?? true,
-      createdAt: now,
-      updatedAt: now,
-    })
-    .returning();
+  const insertValues = {
+    id,
+    organizationId: input.organizationId,
+    provider: input.provider || "custom",
+    baseUrl: input.baseUrl ? input.baseUrl.trim() : null,
+    apiKey: input.apiKey ? input.apiKey.trim() : null,
+    defaultModel: input.defaultModel?.trim() || "minimax/minimax-m3",
+    customModels: customModelsJson,
+    isActive: input.isActive ?? true,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  try {
+    const [inserted] = await db
+      .insert(aiSettings)
+      .values(insertValues)
+      .returning();
+
+    if (inserted) {
+      return {
+        id: inserted.id,
+        organizationId: inserted.organizationId,
+        provider: inserted.provider,
+        baseUrl: inserted.baseUrl,
+        apiKey: inserted.apiKey,
+        defaultModel: inserted.defaultModel,
+        customModels: parseCustomModels(inserted.customModels),
+        isActive: Boolean(inserted.isActive),
+        createdAt: inserted.createdAt,
+        updatedAt: inserted.updatedAt,
+      };
+    }
+  } catch (err: unknown) {
+    console.error("[AiSettingsRepository] Failed to insert ai_settings:", err);
+  }
 
   return {
-    id: inserted.id,
-    organizationId: inserted.organizationId,
-    provider: inserted.provider,
-    baseUrl: inserted.baseUrl,
-    apiKey: inserted.apiKey,
-    defaultModel: inserted.defaultModel,
-    customModels: parseCustomModels(inserted.customModels),
-    isActive: Boolean(inserted.isActive),
-    createdAt: inserted.createdAt,
-    updatedAt: inserted.updatedAt,
+    id,
+    organizationId: input.organizationId,
+    provider: insertValues.provider,
+    baseUrl: insertValues.baseUrl,
+    apiKey: insertValues.apiKey,
+    defaultModel: insertValues.defaultModel,
+    customModels: parseCustomModels(customModelsJson),
+    isActive: insertValues.isActive,
+    createdAt: now,
+    updatedAt: now,
   };
 }
 

@@ -16,6 +16,7 @@ import {
   getProjectNavGroups,
 } from "@/client/navigation/items";
 import { ProjectSwitcher } from "@/client/features/projects/ProjectSwitcher";
+import { DataforseoBalanceWidget } from "@/client/components/DataforseoBalanceWidget";
 import { SamSidebarPanel } from "@/client/features/sam/SamSidebarPanel";
 import { ThemePreferenceMenuItems } from "@/client/components/ThemePreferenceMenuItems";
 import { closeDropdown } from "@/client/lib/dropdown";
@@ -194,6 +195,7 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
         </nav>
       )}
 
+      <DataforseoBalanceWidget onNavigate={onNavigate} />
       <SidebarFooter onNavigate={onNavigate} />
     </div>
   );

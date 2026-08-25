@@ -10,10 +10,7 @@ import {
 import { useSamAccess } from "./useSamAccess";
 import { SamSetupGate } from "./SamSetupGate";
 import { SamConversation } from "./SamConversation";
-import {
-  SamModelSelector,
-  useSelectedAiModel,
-} from "./SamModelSelector";
+import { SamModelSelector, useSelectedAiModel } from "./SamModelSelector";
 
 /**
  * The SAM route's content: the active conversation, full-width. The chat

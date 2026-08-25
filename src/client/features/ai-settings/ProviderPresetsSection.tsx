@@ -7,7 +7,7 @@ export type ProviderPreset = {
   suggestedModels: string[];
 };
 
-export const PROVIDER_PRESETS: ProviderPreset[] = [
+const PROVIDER_PRESETS: ProviderPreset[] = [
   {
     id: "openrouter",
     name: "OpenRouter",
@@ -67,7 +67,12 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     baseUrl: "",
     defaultModel: "gpt-4o-mini",
     icon: "⚙️",
-    suggestedModels: ["gpt-4o", "gpt-4o-mini", "claude-3-5-sonnet", "deepseek-chat"],
+    suggestedModels: [
+      "gpt-4o",
+      "gpt-4o-mini",
+      "claude-3-5-sonnet",
+      "deepseek-chat",
+    ],
   },
 ];
 

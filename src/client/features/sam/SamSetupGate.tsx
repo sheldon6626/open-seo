@@ -18,22 +18,23 @@ export function SamSetupGate({
             <Cpu className="size-5" />
           </div>
           <div className="max-w-3xl space-y-1.5">
-            <h2 className="text-xl font-semibold">启用 AI 智能助手与对话功能</h2>
+            <h2 className="text-xl font-semibold">
+              启用 AI 智能助手与对话功能
+            </h2>
             <div className="text-sm text-base-content/75 leading-relaxed">
               SAM（OpenSEO 内置 SEO 智能助手）需要配置 AI 模型接口与 API Key。
-              支持配置自定义第三方接口（如 OpenAI、DeepSeek、硅基流动、本地 Ollama 或 OpenRouter 等）。
+              支持配置自定义第三方接口（如 OpenAI、DeepSeek、硅基流动、本地
+              Ollama 或 OpenRouter 等）。
             </div>
             <div className="text-xs text-base-content/50">
-              您可以直接在系统设置中的「AI 设置」页面配置 API Key，或在服务器环境变量中设置 <code>OPENROUTER_API_KEY</code>。
+              您可以直接在系统设置中的「AI 设置」页面配置 API
+              Key，或在服务器环境变量中设置 <code>OPENROUTER_API_KEY</code>。
             </div>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Link
-            to="/ai-settings"
-            className="btn btn-primary gap-1.5"
-          >
+          <Link to="/ai-settings" className="btn btn-primary gap-1.5">
             <Cpu className="size-4" />
             前往 AI 设置页面配置
           </Link>

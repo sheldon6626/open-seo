@@ -33,9 +33,7 @@ function ProjectSettingsLayout() {
             项目列表
           </Link>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              项目设置
-            </h1>
+            <h1 className="text-2xl font-bold tracking-tight">项目设置</h1>
             <p className="text-sm text-base-content/60">
               {project?.name ?? " "}
             </p>

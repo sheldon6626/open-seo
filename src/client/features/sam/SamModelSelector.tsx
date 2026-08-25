@@ -1,20 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import {
-  Check,
-  ChevronDown,
-  Cpu,
-  Search,
-  Settings,
-} from "lucide-react";
+import { Check, ChevronDown, Cpu, Search, Settings } from "lucide-react";
 import { getAvailableChatModels } from "@/serverFunctions/aiSettings";
 
 const LOCAL_STORAGE_MODEL_KEY = "openseo-selected-ai-model";
 
-export function getModelBadge(modelName: string): string {
+function getModelBadge(modelName: string): string {
   if (modelName.includes("deepseek")) return "🐋";
-  if (modelName.includes("gpt") || modelName.includes("o1") || modelName.includes("o3")) return "🤖";
+  if (
+    modelName.includes("gpt") ||
+    modelName.includes("o1") ||
+    modelName.includes("o3")
+  )
+    return "🤖";
   if (modelName.includes("claude")) return "🧠";
   if (modelName.includes("minimax")) return "⚡";
   if (modelName.includes("gemini")) return "✨";

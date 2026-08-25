@@ -127,7 +127,8 @@ export class SamChatAgent extends Think {
   }
 
   getModel() {
-    const apiKey = getEnvValueSync(this.env, "OPENROUTER_API_KEY") || "sk-dummy-key";
+    const apiKey =
+      getEnvValueSync(this.env, "OPENROUTER_API_KEY") || "sk-dummy-key";
     return buildChatAgentModel(
       apiKey,
       getEnvValueSync(this.env, "OPENROUTER_MODEL"),

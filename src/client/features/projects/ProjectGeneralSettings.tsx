@@ -159,14 +159,12 @@ function DangerSection({
 
   return (
     <section className="space-y-3 border-t border-base-300 pt-8">
-      <h2 className="text-sm font-medium text-base-content/50">
-        归档项目
-      </h2>
+      <h2 className="text-sm font-medium text-base-content/50">归档项目</h2>
 
       {confirming ? (
         <div className="space-y-3">
           <p className="text-sm text-base-content/70">
-            归档 
+            归档
             <span className="font-medium text-base-content">
               {project.name}
             </span>{" "}

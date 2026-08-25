@@ -103,7 +103,8 @@ export function CreateProjectModal({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col gap-1.5">
           <ProjectMarketFields value={market} onChange={setMarket} />
           <span className="text-xs text-base-content/50">
-            关键词、SERP 与域名分析默认采用该国家/地区与语言。后续可在项目设置中修改。
+            关键词、SERP
+            与域名分析默认采用该国家/地区与语言。后续可在项目设置中修改。
           </span>
         </div>
 

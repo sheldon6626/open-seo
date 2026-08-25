@@ -80,7 +80,7 @@ export async function resolveCloudflareAccessContext(
         issuer: teamDomain,
         ...(policyAud ? { audience: policyAud } : {}),
       }));
-    } catch (audError) {
+    } catch {
       // Fallback: If audience verification failed (e.g. AUD tag mismatch / UUID entered),
       // verify the cryptographic signature and issuer against your team's Cloudflare Access JWKS.
       ({ payload } = await jwtVerify(token, jwks, {

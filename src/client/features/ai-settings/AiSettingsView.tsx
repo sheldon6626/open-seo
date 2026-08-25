@@ -37,8 +37,14 @@ export function AiSettingsView() {
   const [apiKey, setApiKey] = useState("");
   const [defaultModel, setDefaultModel] = useState("minimax/minimax-m3");
   const [customModels, setCustomModels] = useState<string[]>([]);
-  const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
-  const [fetchResult, setFetchResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [testResult, setTestResult] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
+  const [fetchResult, setFetchResult] = useState<{
+    success: boolean;
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     if (settingsQuery.data) {
@@ -47,9 +53,10 @@ export function AiSettingsView() {
       setBaseUrl(data.baseUrl || "");
       setApiKey(data.apiKey || "");
       setDefaultModel(data.defaultModel || "minimax/minimax-m3");
-      const models = data.customModels && data.customModels.length > 0
-        ? data.customModels
-        : DEFAULT_POPULAR_MODELS;
+      const models =
+        data.customModels && data.customModels.length > 0
+          ? data.customModels
+          : DEFAULT_POPULAR_MODELS;
       setCustomModels(models);
     }
   }, [settingsQuery.data]);
@@ -106,7 +113,8 @@ export function AiSettingsView() {
       } else {
         setFetchResult({
           success: false,
-          message: res.error || "拉取模型失败，请检查 Base URL 和 API Key 是否正确。",
+          message:
+            res.error || "拉取模型失败，请检查 Base URL 和 API Key 是否正确。",
         });
         toast.error(res.error || "拉取模型失败");
       }
@@ -149,7 +157,9 @@ export function AiSettingsView() {
     }
     setDefaultModel(preset.defaultModel);
     if (preset.suggestedModels.length > 0) {
-      const combined = Array.from(new Set([...preset.suggestedModels, ...customModels]));
+      const combined = Array.from(
+        new Set([...preset.suggestedModels, ...customModels]),
+      );
       setCustomModels(combined);
     }
     toast.info(`已切换为 ${preset.name} 预设`);
@@ -182,10 +192,13 @@ export function AiSettingsView() {
               <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <Cpu className="size-5" />
               </div>
-              <h1 className="text-2xl font-bold tracking-tight">AI 模型与接口设置</h1>
+              <h1 className="text-2xl font-bold tracking-tight">
+                AI 模型与接口设置
+              </h1>
             </div>
             <p className="mt-1.5 text-sm text-base-content/65">
-              配置第三方大模型接口（支持 OpenAI 格式、OpenRouter、DeepSeek、硅基流动、Ollama 等）与对话可选模型。
+              配置第三方大模型接口（支持 OpenAI
+              格式、OpenRouter、DeepSeek、硅基流动、Ollama 等）与对话可选模型。
             </p>
           </div>
 

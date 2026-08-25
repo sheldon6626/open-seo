@@ -2,12 +2,12 @@ import {
   Bookmark,
   Bot,
   ClipboardCheck,
+  Cpu,
   Globe,
   LayoutDashboard,
   Link2,
   MessageSquare,
   Search,
-  Sliders,
   Sparkles,
   TrendingUp,
 } from "lucide-react";
@@ -76,10 +76,16 @@ const aiNavItem = linkOptions({
   icon: Bot,
 });
 
+const aiSettingsNavItem = linkOptions({
+  to: "/ai-settings" as const,
+  label: "AI 设置",
+  icon: Cpu,
+});
+
 // Always-visible sidebar group (not project-scoped, unlike the groups below).
 export const connectNavGroup = {
   label: "连接",
-  items: [aiNavItem],
+  items: [aiNavItem, aiSettingsNavItem],
 };
 
 function getProjectNavItems(projectId: string) {

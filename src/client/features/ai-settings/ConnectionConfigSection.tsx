@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Check, Eye, EyeOff, Globe, Loader2, RefreshCw, Zap } from "lucide-react";
+import {
+  Check,
+  Eye,
+  EyeOff,
+  Globe,
+  Loader2,
+  RefreshCw,
+  Zap,
+} from "lucide-react";
 
 export function ConnectionConfigSection({
   baseUrl,
@@ -30,7 +38,9 @@ export function ConnectionConfigSection({
     <section className="space-y-4 rounded-xl border border-base-300 bg-base-200/40 p-5">
       <div className="flex items-center gap-2 border-b border-base-300 pb-3">
         <Globe className="size-4 text-primary" />
-        <h2 className="text-sm font-semibold text-base-content">接口连接配置</h2>
+        <h2 className="text-sm font-semibold text-base-content">
+          接口连接配置
+        </h2>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -68,7 +78,11 @@ export function ConnectionConfigSection({
               className="btn btn-ghost btn-xs absolute right-1 size-7 p-0 text-base-content/40 hover:text-base-content"
               aria-label={showApiKey ? "Hide key" : "Show key"}
             >
-              {showApiKey ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+              {showApiKey ? (
+                <EyeOff className="size-3.5" />
+              ) : (
+                <Eye className="size-3.5" />
+              )}
             </button>
           </div>
           <p className="text-[11px] text-base-content/50">

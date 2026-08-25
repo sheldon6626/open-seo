@@ -3,24 +3,21 @@
   "name": "open-seo",
   "main": "src/server.ts",
   "compatibility_date": "2025-09-02",
-  "compatibility_flags": [
-    "nodejs_compat",
-    "global_fetch_strictly_public"
-  ],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "observability": {
     "enabled": true,
     "traces": {
-      "enabled": true
-    }
+      "enabled": true,
+    },
   },
   "placement": {
-    "mode": "smart"
+    "mode": "smart",
   },
   "routes": [
     {
       "pattern": "seo.now9888.com",
-      "custom_domain": true
-    }
+      "custom_domain": true,
+    },
   ],
   "vars": {
     "AUTH_MODE": "cloudflare_access",
@@ -29,84 +26,75 @@
     "OPENROUTER_MODEL": "gemini-3.7-flash-high",
     "OPENROUTER_API_KEY": "sk-kAkHDo7RggjQ3uZ01",
     "TEAM_DOMAIN": "https://kuul.cloudflareaccess.com",
-    "POLICY_AUD": "7ba6dd65-4b8e-42d0-ba62-948046548c5f"
+    "POLICY_AUD": "7ba6dd65-4b8e-42d0-ba62-948046548c5f",
   },
   "workflows": [
     {
       "name": "site-audit-workflow",
       "binding": "SITE_AUDIT_WORKFLOW",
-      "class_name": "SiteAuditWorkflow"
+      "class_name": "SiteAuditWorkflow",
     },
     {
       "name": "rank-check-workflow",
       "binding": "RANK_CHECK_WORKFLOW",
-      "class_name": "RankCheckWorkflow"
-    }
+      "class_name": "RankCheckWorkflow",
+    },
   ],
   "durable_objects": {
     "bindings": [
       {
         "name": "ONBOARDING_CHAT",
-        "class_name": "OnboardingChatAgent"
+        "class_name": "OnboardingChatAgent",
       },
       {
         "name": "SAM_CHAT",
-        "class_name": "SamChatAgent"
+        "class_name": "SamChatAgent",
       },
       {
         "name": "AUDIT_SCRATCHPAD",
-        "class_name": "AuditScratchpad"
-      }
-    ]
+        "class_name": "AuditScratchpad",
+      },
+    ],
   },
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": [
-        "OnboardingChatAgent"
-      ]
+      "new_sqlite_classes": ["OnboardingChatAgent"],
     },
     {
       "tag": "v2",
-      "new_sqlite_classes": [
-        "SamChatAgent"
-      ]
+      "new_sqlite_classes": ["SamChatAgent"],
     },
     {
       "tag": "v3",
-      "new_sqlite_classes": [
-        "AuditScratchpad"
-      ]
-    }
+      "new_sqlite_classes": ["AuditScratchpad"],
+    },
   ],
   "triggers": {
-    "crons": [
-      "*/5 * * * *",
-      "17 3 * * *"
-    ]
+    "crons": ["*/5 * * * *", "17 3 * * *"],
   },
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "9532e0f5d4c24d50a94c0d8084886cef"
+      "id": "9532e0f5d4c24d50a94c0d8084886cef",
     },
     {
       "binding": "OAUTH_KV",
-      "id": "7b45b960467a41eb83b009143043e901"
-    }
+      "id": "7b45b960467a41eb83b009143043e901",
+    },
   ],
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "open-seo-db",
       "database_id": "e3217d2d-6c50-488d-a841-9c809cd7a972",
-      "migrations_dir": "drizzle"
-    }
+      "migrations_dir": "drizzle",
+    },
   ],
   "r2_buckets": [
     {
       "bucket_name": "open-seo-r2",
-      "binding": "R2"
-    }
-  ]
+      "binding": "R2",
+    },
+  ],
 }

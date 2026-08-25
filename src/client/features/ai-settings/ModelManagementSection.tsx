@@ -38,7 +38,9 @@ export function ModelManagementSection({
       <div className="flex items-center justify-between border-b border-base-300 pb-3">
         <div className="flex items-center gap-2">
           <Layers className="size-4 text-primary" />
-          <h2 className="text-sm font-semibold text-base-content">模型配置与管理</h2>
+          <h2 className="text-sm font-semibold text-base-content">
+            模型配置与管理
+          </h2>
         </div>
         <button
           type="button"
@@ -55,7 +57,9 @@ export function ModelManagementSection({
         </label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <select
-            value={customModels.includes(defaultModel) ? defaultModel : "custom"}
+            value={
+              customModels.includes(defaultModel) ? defaultModel : "custom"
+            }
             onChange={(e) => {
               if (e.target.value !== "custom") {
                 setDefaultModel(e.target.value);

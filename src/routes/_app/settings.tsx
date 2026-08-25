@@ -54,9 +54,7 @@ function SettingsPage() {
         <h1 className="text-2xl font-bold tracking-tight">系统设置</h1>
 
         <section className="space-y-3">
-          <h2 className="text-sm font-medium text-base-content/50">
-            界面外观
-          </h2>
+          <h2 className="text-sm font-medium text-base-content/50">界面外观</h2>
           <div className="flex items-center justify-between gap-6">
             <span className="text-sm">主题外观</span>
             <div

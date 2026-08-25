@@ -1,5 +1,11 @@
 import { sql } from "drizzle-orm";
-import { boolean, index, pgTable, text, uniqueIndex } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  index,
+  pgTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 import { organization, user } from "./better-auth-schema";
 import { projects } from "./app.schema";
 

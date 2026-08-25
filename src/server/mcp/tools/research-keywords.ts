@@ -32,7 +32,14 @@ const inputSchema = {
       "1-5 seed keywords. Each seed is researched independently and returns related keywords with volume/difficulty/CPC. Bulk-friendly — prefer this over multiple single-seed calls.",
     ),
   resultLimit: z
-    .union([z.literal(30), z.literal(50), z.literal(100), z.literal(150), z.literal(300), z.literal(500)])
+    .union([
+      z.literal(30),
+      z.literal(50),
+      z.literal(100),
+      z.literal(150),
+      z.literal(300),
+      z.literal(500),
+    ])
     .optional()
     .describe("Max keywords returned per seed. Defaults to 150."),
   includeClickstreamData: z

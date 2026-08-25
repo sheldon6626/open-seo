@@ -53,7 +53,9 @@ function AiPage() {
       <div className="mx-auto max-w-3xl">
         <h1 className="text-2xl font-semibold">AI 与 MCP 集成</h1>
         <p className="mt-2 text-sm text-base-content/70 leading-relaxed">
-          将你的 AI Agent 连接至 OpenSEO。在你的编辑器（如 Codex、Claude Code、Cursor）或对话中直接运行关键词研究、SERP 分析、域名调研与外链审查。
+          将你的 AI Agent 连接至 OpenSEO。在你的编辑器（如 Codex、Claude
+          Code、Cursor）或对话中直接运行关键词研究、SERP
+          分析、域名调研与外链审查。
         </p>
 
         {getAuthMode(import.meta.env.AUTH_MODE) === "cloudflare_access" ? (

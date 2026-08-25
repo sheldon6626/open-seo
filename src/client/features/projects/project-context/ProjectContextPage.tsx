@@ -24,7 +24,7 @@ import {
   type ProjectContextData,
 } from "./shared";
 
-const SECTION_DISPLAY_LABELS: Record<ProjectContextSectionKey, string> = {
+const _SECTION_DISPLAY_LABELS: Record<ProjectContextSectionKey, string> = {
   business_overview: "业务概况",
   current_goal: "当前目标",
   positioning: "市场定位",

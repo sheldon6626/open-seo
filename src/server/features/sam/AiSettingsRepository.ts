@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { aiSettings } from "@/db/schema";
 
-export type AiSettingsRecord = {
+type AiSettingsRecord = {
   id: string;
   organizationId: string;
   provider: string;
@@ -15,7 +15,7 @@ export type AiSettingsRecord = {
   updatedAt: string;
 };
 
-export type SaveAiSettingsInput = {
+type SaveAiSettingsInput = {
   organizationId: string;
   provider?: string;
   baseUrl?: string | null;

@@ -1,3 +1,6 @@
+.agents
+.agents/*
+.agents/**
 **/build
 **/public
 pnpm-lock.yaml

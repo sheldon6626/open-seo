@@ -31,7 +31,9 @@ export const getSamAccessSetupStatus = createServerFn({ method: "GET" })
       return { enabled: true, errorMessage: null };
     }
 
-    const customSettings = await AiSettingsRepository.getAiSettings(context.organizationId);
+    const customSettings = await AiSettingsRepository.getAiSettings(
+      context.organizationId,
+    );
     if (customSettings?.apiKey) {
       return { enabled: true, errorMessage: null };
     }

@@ -25,7 +25,9 @@ vi.mock("@/db", () => ({
     select: vi.fn(() => ({
       from: vi.fn(() => ({
         where: vi.fn(() => ({
-          limit: vi.fn().mockImplementation(() => Promise.resolve(mocks.selectRows)),
+          limit: vi
+            .fn()
+            .mockImplementation(() => Promise.resolve(mocks.selectRows)),
         })),
       })),
     })),
@@ -85,7 +87,10 @@ describe("AiSettingsRepository", () => {
     expect(result?.baseUrl).toBe("https://api.deepseek.com/v1");
     expect(result?.apiKey).toBe("sk-test");
     expect(result?.defaultModel).toBe("deepseek-chat");
-    expect(result?.customModels).toEqual(["deepseek-chat", "deepseek-reasoner"]);
+    expect(result?.customModels).toEqual([
+      "deepseek-chat",
+      "deepseek-reasoner",
+    ]);
     expect(result?.isActive).toBe(true);
   });
 

@@ -1,4 +1,10 @@
-import { integer, sqliteTable, text, index, uniqueIndex } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  sqliteTable,
+  text,
+  index,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { organization, user } from "./better-auth-schema";
 import { projects } from "./app.schema";

@@ -35,12 +35,20 @@ const testConnectionSchema = z.object({
   model: z.string().optional(),
 });
 
-function parseHttpErrorDetail(errorText: string, defaultStatus: string): string {
+function parseHttpErrorDetail(
+  errorText: string,
+  defaultStatus: string,
+): string {
   if (!errorText) return defaultStatus;
   try {
     const parsed: unknown = JSON.parse(errorText);
     if (parsed && typeof parsed === "object") {
-      if ("error" in parsed && parsed.error && typeof parsed.error === "object" && "message" in parsed.error) {
+      if (
+        "error" in parsed &&
+        parsed.error &&
+        typeof parsed.error === "object" &&
+        "message" in parsed.error
+      ) {
         return `${defaultStatus}: ${String((parsed.error as { message: unknown }).message)}`;
       }
       if ("message" in parsed) {
@@ -56,7 +64,9 @@ function parseHttpErrorDetail(errorText: string, defaultStatus: string): string 
 export const getAiSettings = createServerFn({ method: "GET" })
   .middleware(requireAuthenticatedContext)
   .handler(async ({ context }) => {
-    const record = await AiSettingsRepository.getAiSettings(context.organizationId);
+    const record = await AiSettingsRepository.getAiSettings(
+      context.organizationId,
+    );
     const envApiKey = await getOptionalEnvValue("OPENROUTER_API_KEY");
     const envBaseUrl = await getOptionalEnvValue("OPENROUTER_BASE_URL");
     const envModel = await getOptionalEnvValue("OPENROUTER_MODEL");
@@ -66,7 +76,9 @@ export const getAiSettings = createServerFn({ method: "GET" })
     const effectiveApiKey = record?.apiKey || (hasEnvKey ? "••••••••" : "");
 
     return {
-      provider: record?.provider ?? (hasDbKey ? "custom" : hasEnvKey ? "openrouter" : "custom"),
+      provider:
+        record?.provider ??
+        (hasDbKey ? "custom" : hasEnvKey ? "openrouter" : "custom"),
       baseUrl: record?.baseUrl ?? envBaseUrl ?? "",
       apiKey: effectiveApiKey,
       hasApiKey: hasDbKey || hasEnvKey,
@@ -84,7 +96,9 @@ export const saveAiSettings = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     let apiKeyToSave = data.apiKey;
     if (apiKeyToSave === "••••••••") {
-      const existing = await AiSettingsRepository.getAiSettings(context.organizationId);
+      const existing = await AiSettingsRepository.getAiSettings(
+        context.organizationId,
+      );
       apiKeyToSave = existing?.apiKey ?? null;
     }
 
@@ -119,12 +133,20 @@ export const fetchAvailableModels = createServerFn({ method: "POST" })
     let baseUrl = data.baseUrl?.trim();
     let apiKey = data.apiKey?.trim();
 
-    const existing = await AiSettingsRepository.getAiSettings(context.organizationId);
+    const existing = await AiSettingsRepository.getAiSettings(
+      context.organizationId,
+    );
     if (!baseUrl) {
-      baseUrl = existing?.baseUrl || (await getOptionalEnvValue("OPENROUTER_BASE_URL")) || "https://openrouter.ai/api/v1";
+      baseUrl =
+        existing?.baseUrl ||
+        (await getOptionalEnvValue("OPENROUTER_BASE_URL")) ||
+        "https://openrouter.ai/api/v1";
     }
     if (!apiKey || apiKey === "••••••••") {
-      apiKey = existing?.apiKey || (await getOptionalEnvValue("OPENROUTER_API_KEY")) || "";
+      apiKey =
+        existing?.apiKey ||
+        (await getOptionalEnvValue("OPENROUTER_API_KEY")) ||
+        "";
     }
 
     if (!baseUrl) {
@@ -168,7 +190,12 @@ export const fetchAvailableModels = createServerFn({ method: "POST" })
           modelList = json.data
             .map((item: unknown) => {
               if (typeof item === "string") return item;
-              if (item && typeof item === "object" && "id" in item && typeof item.id === "string") {
+              if (
+                item &&
+                typeof item === "object" &&
+                "id" in item &&
+                typeof item.id === "string"
+              ) {
                 return item.id;
               }
               return null;
@@ -178,10 +205,20 @@ export const fetchAvailableModels = createServerFn({ method: "POST" })
           modelList = json.models
             .map((item: unknown) => {
               if (typeof item === "string") return item;
-              if (item && typeof item === "object" && "name" in item && typeof item.name === "string") {
+              if (
+                item &&
+                typeof item === "object" &&
+                "name" in item &&
+                typeof item.name === "string"
+              ) {
                 return item.name;
               }
-              if (item && typeof item === "object" && "id" in item && typeof item.id === "string") {
+              if (
+                item &&
+                typeof item === "object" &&
+                "id" in item &&
+                typeof item.id === "string"
+              ) {
                 return item.id;
               }
               return null;
@@ -192,7 +229,12 @@ export const fetchAvailableModels = createServerFn({ method: "POST" })
         modelList = json
           .map((item: unknown) => {
             if (typeof item === "string") return item;
-            if (item && typeof item === "object" && "id" in item && typeof item.id === "string") {
+            if (
+              item &&
+              typeof item === "object" &&
+              "id" in item &&
+              typeof item.id === "string"
+            ) {
               return item.id;
             }
             return null;
@@ -200,7 +242,9 @@ export const fetchAvailableModels = createServerFn({ method: "POST" })
           .filter((id): id is string => Boolean(id));
       }
 
-      modelList = Array.from(new Set(modelList)).toSorted((a, b) => a.localeCompare(b));
+      modelList = Array.from(new Set(modelList)).toSorted((a, b) =>
+        a.localeCompare(b),
+      );
 
       return {
         success: true,
@@ -223,12 +267,20 @@ export const testAiConnection = createServerFn({ method: "POST" })
     let baseUrl = data.baseUrl?.trim();
     let apiKey = data.apiKey?.trim();
 
-    const existing = await AiSettingsRepository.getAiSettings(context.organizationId);
+    const existing = await AiSettingsRepository.getAiSettings(
+      context.organizationId,
+    );
     if (!baseUrl) {
-      baseUrl = existing?.baseUrl || (await getOptionalEnvValue("OPENROUTER_BASE_URL")) || "https://openrouter.ai/api/v1";
+      baseUrl =
+        existing?.baseUrl ||
+        (await getOptionalEnvValue("OPENROUTER_BASE_URL")) ||
+        "https://openrouter.ai/api/v1";
     }
     if (!apiKey || apiKey === "••••••••") {
-      apiKey = existing?.apiKey || (await getOptionalEnvValue("OPENROUTER_API_KEY")) || "";
+      apiKey =
+        existing?.apiKey ||
+        (await getOptionalEnvValue("OPENROUTER_API_KEY")) ||
+        "";
     }
 
     if (!baseUrl) {
@@ -259,7 +311,10 @@ export const testAiConnection = createServerFn({ method: "POST" })
         return { success: true, message: "接口连接成功！认证与端点响应正常。" };
       } else {
         const statusText = response.statusText || `HTTP ${response.status}`;
-        return { success: false, message: `接口连接异常: ${response.status} ${statusText}` };
+        return {
+          success: false,
+          message: `接口连接异常: ${response.status} ${statusText}`,
+        };
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -270,14 +325,17 @@ export const testAiConnection = createServerFn({ method: "POST" })
 export const getAvailableChatModels = createServerFn({ method: "GET" })
   .middleware(requireAuthenticatedContext)
   .handler(async ({ context }) => {
-    const record = await AiSettingsRepository.getAiSettings(context.organizationId);
+    const record = await AiSettingsRepository.getAiSettings(
+      context.organizationId,
+    );
     const envModel = await getOptionalEnvValue("OPENROUTER_MODEL");
 
-    const defaultModel = record?.defaultModel || envModel || "minimax/minimax-m3";
+    const defaultModel =
+      record?.defaultModel || envModel || "minimax/minimax-m3";
     const customModels = record?.customModels || [];
 
     const allModels = Array.from(
-      new Set([defaultModel, ...customModels, ...DEFAULT_POPULAR_MODELS])
+      new Set([defaultModel, ...customModels, ...DEFAULT_POPULAR_MODELS]),
     ).filter(Boolean);
 
     return {

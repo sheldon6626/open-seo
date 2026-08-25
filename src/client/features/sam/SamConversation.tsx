@@ -191,7 +191,9 @@ export function SamConversation({
           {/* Model picker & quick settings bar */}
           <div className="mb-2 flex items-center justify-between text-xs text-base-content/60">
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] text-base-content/50">当前模型:</span>
+              <span className="text-[11px] text-base-content/50">
+                当前模型:
+              </span>
               <SamModelSelector
                 selectedModel={selectedModel}
                 onSelectModel={onSelectModel ?? (() => {})}

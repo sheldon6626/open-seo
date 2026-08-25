@@ -21,7 +21,14 @@ export const researchKeywordsSchema = z.object({
   locationCode: z.number().int().positive().optional(),
   languageCode: z.string().min(2).max(8).optional(),
   resultLimit: z
-    .union([z.literal(30), z.literal(50), z.literal(100), z.literal(150), z.literal(300), z.literal(500)])
+    .union([
+      z.literal(30),
+      z.literal(50),
+      z.literal(100),
+      z.literal(150),
+      z.literal(300),
+      z.literal(500),
+    ])
     .default(150),
   mode: z
     .enum(["auto", "related", "suggestions", "ideas"])
@@ -195,7 +202,16 @@ const keywordModes = ["auto", "related", "suggestions", "ideas"] as const;
 export const keywordsSearchSchema = z.object({
   q: z.string().optional(),
   loc: z.coerce.number().int().positive().optional(),
-  kLimit: z.union([z.literal(30), z.literal(50), z.literal(100), z.literal(150), z.literal(300), z.literal(500)]).optional(),
+  kLimit: z
+    .union([
+      z.literal(30),
+      z.literal(50),
+      z.literal(100),
+      z.literal(150),
+      z.literal(300),
+      z.literal(500),
+    ])
+    .optional(),
   mode: z.enum(keywordModes).optional(),
   cs: booleanSearchParamSchema.optional(),
   sort: z.enum(keywordSortFields).optional(),

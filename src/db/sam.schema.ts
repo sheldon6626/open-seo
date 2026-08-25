@@ -1,6 +1,6 @@
-import { sqliteTable, text, index } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, index, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
-import { user } from "./better-auth-schema";
+import { organization, user } from "./better-auth-schema";
 import { projects } from "./app.schema";
 
 // One row per SAM chat session. The conversation history itself lives in the
@@ -36,5 +36,31 @@ export const samSessions = sqliteTable(
       table.projectId,
       table.updatedAt,
     ),
+  ],
+);
+
+// AI & LLM provider settings configured per organization
+export const aiSettings = sqliteTable(
+  "ai_settings",
+  {
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull().default("custom"),
+    baseUrl: text("base_url"),
+    apiKey: text("api_key"),
+    defaultModel: text("default_model").notNull().default("minimax/minimax-m3"),
+    customModels: text("custom_models").notNull().default("[]"),
+    isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(current_timestamp)`),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`(current_timestamp)`),
+  },
+  (table) => [
+    uniqueIndex("ai_settings_organization_id_idx").on(table.organizationId),
   ],
 );

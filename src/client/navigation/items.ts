@@ -7,6 +7,7 @@ import {
   Link2,
   MessageSquare,
   Search,
+  Sliders,
   Sparkles,
   TrendingUp,
 } from "lucide-react";

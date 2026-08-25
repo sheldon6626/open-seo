@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
-import { index, pgTable, text } from "drizzle-orm/pg-core";
-import { user } from "./better-auth-schema";
+import { boolean, index, pgTable, text, uniqueIndex } from "drizzle-orm/pg-core";
+import { organization, user } from "./better-auth-schema";
 import { projects } from "./app.schema";
 
 // See src/db/pg/app.schema.ts for why timestamps are ISO-8601 UTC text.
@@ -35,5 +35,27 @@ export const samSessions = pgTable(
       table.projectId,
       table.updatedAt,
     ),
+  ],
+);
+
+// AI & LLM provider settings configured per organization
+export const aiSettings = pgTable(
+  "ai_settings",
+  {
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull().default("custom"),
+    baseUrl: text("base_url"),
+    apiKey: text("api_key"),
+    defaultModel: text("default_model").notNull().default("minimax/minimax-m3"),
+    customModels: text("custom_models").notNull().default("[]"),
+    isActive: boolean("is_active").notNull().default(true),
+    createdAt: text("created_at").notNull().default(isoNow),
+    updatedAt: text("updated_at").notNull().default(isoNow),
+  },
+  (table) => [
+    uniqueIndex("ai_settings_organization_id_idx").on(table.organizationId),
   ],
 );

@@ -89,6 +89,7 @@ export const {
   auditIssues,
   auditLighthouseResults,
   samSessions,
+  aiSettings,
   user,
   session,
   account,

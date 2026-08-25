@@ -3,6 +3,8 @@ import { useAgent } from "agents/react";
 // variant skips the client->server transcript sync Think doesn't support.
 import { useAgentChat } from "@cloudflare/think/react";
 import { useEffect, useRef } from "react";
+import { Link } from "@tanstack/react-router";
+import { Cpu } from "lucide-react";
 import { ChatComposer } from "@/client/features/onboarding/OnboardingChatParts";
 import { invalidateSamSessions } from "@/client/features/sam/samQueries";
 import {
@@ -11,6 +13,7 @@ import {
   messageHasVisibleContent,
 } from "@/client/components/chat/ChatMessage";
 import { useStickToBottom } from "@/client/components/chat/useStickToBottom";
+import { SamModelSelector } from "./SamModelSelector";
 
 const SUGGESTIONS = [
   "What keywords should I focus on next?",
@@ -22,9 +25,13 @@ const SUGGESTIONS = [
 export function SamConversation({
   projectId,
   sessionId,
+  selectedModel,
+  onSelectModel,
 }: {
   projectId: string;
   sessionId: string;
+  selectedModel: string;
+  onSelectModel?: (model: string) => void;
 }) {
   // The conversation lives in the SamChatAgent Durable Object, keyed by the
   // session id. The WebSocket is authorized in the Worker (src/server.ts) before
@@ -40,7 +47,7 @@ export function SamConversation({
   );
   const sendText = (text: string) => {
     pinToBottom();
-    void sendMessage({ text });
+    void sendMessage({ text }, { body: { model: selectedModel } });
   };
 
   // Rewind the server-side conversation to before `messageId`: the DO aborts
@@ -181,6 +188,25 @@ export function SamConversation({
 
       <div className="flex-shrink-0 border-t border-base-300 px-5 py-3">
         <div className="mx-auto w-full max-w-2xl">
+          {/* Model picker & quick settings bar */}
+          <div className="mb-2 flex items-center justify-between text-xs text-base-content/60">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-base-content/50">当前模型:</span>
+              <SamModelSelector
+                selectedModel={selectedModel}
+                onSelectModel={onSelectModel ?? (() => {})}
+                compact
+              />
+            </div>
+            <Link
+              to="/ai-settings"
+              className="flex items-center gap-1 text-[11px] text-base-content/60 hover:text-primary transition-colors"
+            >
+              <Cpu className="size-3" />
+              <span>AI 接口设置</span>
+            </Link>
+          </div>
+
           <ChatComposer
             busy={isBusy}
             onSend={sendText}

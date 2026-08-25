@@ -19,6 +19,7 @@ import {
   staticAssistantModel,
 } from "@/server/lib/chatAgent";
 import { SamSessionRepository } from "@/server/features/sam/SamSessionRepository";
+import { AiSettingsRepository } from "@/server/features/sam/AiSettingsRepository";
 import { ProjectContextService } from "@/server/features/project-context/services/ProjectContextService";
 import { ProjectRepository } from "@/server/features/projects/repositories/ProjectRepository";
 import { buildSamMcpTools } from "@/server/features/sam/samChatTools";
@@ -126,10 +127,7 @@ export class SamChatAgent extends Think {
   }
 
   getModel() {
-    const apiKey = getEnvValueSync(this.env, "OPENROUTER_API_KEY");
-    if (!apiKey) {
-      throw new Error("OPENROUTER_API_KEY is required for the SAM agent");
-    }
+    const apiKey = getEnvValueSync(this.env, "OPENROUTER_API_KEY") || "sk-dummy-key";
     return buildChatAgentModel(
       apiKey,
       getEnvValueSync(this.env, "OPENROUTER_MODEL"),
@@ -286,6 +284,31 @@ export class SamChatAgent extends Think {
       const baseUrl =
         (await this.ctx.storage.get<string>(PUBLIC_ORIGIN_KEY)) ??
         "https://app.openseo.so";
+
+      // Load custom AI settings for the organization if configured
+      const aiConfig = await AiSettingsRepository.getAiSettings(organizationId);
+      const effectiveApiKey =
+        aiConfig?.apiKey || getEnvValueSync(this.env, "OPENROUTER_API_KEY");
+      const effectiveBaseUrl =
+        aiConfig?.baseUrl || getEnvValueSync(this.env, "OPENROUTER_BASE_URL");
+      const chosenModel =
+        (typeof _ctx.body?.model === "string" && _ctx.body.model.trim()) ||
+        aiConfig?.defaultModel ||
+        getEnvValueSync(this.env, "OPENROUTER_MODEL") ||
+        "minimax/minimax-m3";
+
+      if (!effectiveApiKey) {
+        return this.refusalTurn(
+          "未检测到可用的 AI API Key。请前往左侧导航中的「AI 设置」配置第三方接口地址与 API Key 后再使用 AI 对话。",
+        );
+      }
+
+      const activeModel = buildChatAgentModel(
+        effectiveApiKey,
+        chosenModel,
+        effectiveBaseUrl || undefined,
+      );
+
       const authContext: ToolAuthContext = {
         userId: ctx.row.userId,
         userEmail: ctx.userEmail,
@@ -296,6 +319,7 @@ export class SamChatAgent extends Think {
       };
 
       return {
+        model: activeModel,
         tools: buildSamMcpTools(authContext, {
           id: ctx.project.id,
           domain: ctx.project.domain,

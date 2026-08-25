@@ -10,6 +10,10 @@ import {
 import { useSamAccess } from "./useSamAccess";
 import { SamSetupGate } from "./SamSetupGate";
 import { SamConversation } from "./SamConversation";
+import {
+  SamModelSelector,
+  useSelectedAiModel,
+} from "./SamModelSelector";
 
 /**
  * The SAM route's content: the active conversation, full-width. The chat
@@ -28,6 +32,7 @@ export function SamChat({
   const access = useSamAccess(projectId);
   const sessionsQuery = useQuery(samSessionsQueryOptions(projectId));
   const sessions = sessionsQuery.data ?? [];
+  const { selectedModel, setSelectedModel } = useSelectedAiModel();
 
   const goToSession = useCallback(
     (sessionId: string) =>
@@ -56,7 +61,7 @@ export function SamChat({
     goToSession(firstSessionId);
   }, [activeSessionId, firstSessionId, goToSession]);
 
-  // SAM cannot answer a turn without OPENROUTER_API_KEY, so surface setup
+  // SAM cannot answer a turn without AI keys, so surface setup
   // instructions instead of letting a chat fail mid-stream. Only shown once the
   // check confirms the key is missing (self-hosted) — never as a blocking
   // skeleton while the check is in flight.
@@ -80,20 +85,28 @@ export function SamChat({
     )?.title;
     return (
       <div className="flex h-full min-h-0 flex-col">
-        {/* Session title + the shortest path to inspect or correct the shared
-            memory SAM reads and writes during the conversation. */}
-        <div className="flex items-center justify-between gap-3 border-b border-base-300 px-5 py-3.5">
-          <span className="truncate text-sm font-medium text-base-content/80">
-            {activeTitle ?? "Chat"}
-          </span>
-          <Link
-            to="/p/$projectId/settings/context"
-            params={{ projectId }}
-            className="flex shrink-0 items-center gap-1.5 text-xs text-base-content/60 transition-colors hover:text-base-content"
-          >
-            <Brain className="size-3.5" />
-            Project memory
-          </Link>
+        {/* Session title + Model Selector + Project memory link */}
+        <div className="flex items-center justify-between gap-3 border-b border-base-300 px-5 py-3">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="truncate text-sm font-medium text-base-content/80">
+              {activeTitle ?? "Chat"}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <SamModelSelector
+              selectedModel={selectedModel}
+              onSelectModel={setSelectedModel}
+            />
+            <Link
+              to="/p/$projectId/settings/context"
+              params={{ projectId }}
+              className="flex shrink-0 items-center gap-1.5 text-xs text-base-content/60 transition-colors hover:text-base-content"
+            >
+              <Brain className="size-3.5" />
+              Project memory
+            </Link>
+          </div>
         </div>
         <div className="flex min-h-0 flex-1">
           {/* useAgentChat suspends while it fetches the session's history; this
@@ -111,6 +124,8 @@ export function SamChat({
               key={activeSessionId}
               projectId={projectId}
               sessionId={activeSessionId}
+              selectedModel={selectedModel}
+              onSelectModel={setSelectedModel}
             />
           </Suspense>
         </div>
@@ -140,19 +155,26 @@ export function SamChat({
           tool. Start a chat to get going.
         </p>
       </div>
-      <button
-        type="button"
-        className="btn btn-primary btn-sm gap-1"
-        disabled={createSession.isPending}
-        onClick={() => createSession.mutate()}
-      >
-        {createSession.isPending ? (
-          <Loader2 className="size-4 animate-spin" />
-        ) : (
-          <Plus className="size-4" />
-        )}
-        New chat
-      </button>
+
+      <div className="flex items-center gap-2">
+        <SamModelSelector
+          selectedModel={selectedModel}
+          onSelectModel={setSelectedModel}
+        />
+        <button
+          type="button"
+          className="btn btn-primary btn-sm gap-1"
+          disabled={createSession.isPending}
+          onClick={() => createSession.mutate()}
+        >
+          {createSession.isPending ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <Plus className="size-4" />
+          )}
+          New chat
+        </button>
+      </div>
     </div>
   );
 }

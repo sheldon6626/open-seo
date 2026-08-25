@@ -5,9 +5,10 @@ import {
   isHostedServerAuthMode,
 } from "@/server/lib/runtime-env";
 import { requireProjectContext } from "@/serverFunctions/middleware";
+import { AiSettingsRepository } from "@/server/features/sam/AiSettingsRepository";
 
 const OPENROUTER_KEY_MISSING_MESSAGE =
-  "OPENROUTER_API_KEY is not set for this deployment yet. Add it to your environment, restart OpenSEO, then confirm here.";
+  "未检测到 AI API Key。请在左侧导航「AI 设置」中配置第三方 API Key，或在环境配置中设置 OPENROUTER_API_KEY。";
 
 const projectScopedSchema = z.object({ projectId: z.string().min(1) });
 
@@ -16,20 +17,27 @@ type SamAccessStatus = {
   errorMessage: string | null;
 };
 
-// Gates the in-app AI agent (SAM) on an OpenRouter key being configured, the
-// same way backlinks/AI-search gate on their DataForSEO subscriptions. Hosted
-// deployments always have the key provisioned, so only self-hosted is checked.
+// Gates the in-app AI agent (SAM) on an OpenRouter key or custom AI setting being configured.
 export const getSamAccessSetupStatus = createServerFn({ method: "GET" })
   .middleware(requireProjectContext)
   .validator(projectScopedSchema)
-  .handler(async (): Promise<SamAccessStatus> => {
+  .handler(async ({ context }): Promise<SamAccessStatus> => {
     if (await isHostedServerAuthMode()) {
       return { enabled: true, errorMessage: null };
     }
 
-    const enabled = Boolean(await getOptionalEnvValue("OPENROUTER_API_KEY"));
+    const envKey = Boolean(await getOptionalEnvValue("OPENROUTER_API_KEY"));
+    if (envKey) {
+      return { enabled: true, errorMessage: null };
+    }
+
+    const customSettings = await AiSettingsRepository.getAiSettings(context.organizationId);
+    if (customSettings?.apiKey) {
+      return { enabled: true, errorMessage: null };
+    }
+
     return {
-      enabled,
-      errorMessage: enabled ? null : OPENROUTER_KEY_MISSING_MESSAGE,
+      enabled: false,
+      errorMessage: OPENROUTER_KEY_MISSING_MESSAGE,
     };
   });

@@ -17,56 +17,56 @@ import { GoogleGlyphMuted } from "@/client/features/gsc/GoogleGlyph";
 const projectNavItems = [
   {
     to: "/p/$projectId" as const,
-    label: "仪表盘",
+    label: "Overview",
     icon: LayoutDashboard,
     // Without exact matching, the index path is a prefix of every project
-    // route and the Dashboard item would render active everywhere.
+    // route and the Overview item would render active everywhere.
     activeOptions: { exact: true, includeSearch: false },
   },
   {
     to: "/p/$projectId/keywords" as const,
-    label: "关键词研究",
+    label: "Keyword research",
     icon: Search,
   },
   {
     to: "/p/$projectId/saved" as const,
-    label: "已存关键词",
+    label: "Saved keywords",
     icon: Bookmark,
   },
   {
-    to: "/p/$projectId/rank-tracking" as const,
-    label: "排名追踪",
-    icon: TrendingUp,
-  },
-  {
-    to: "/p/$projectId/search-performance" as const,
-    label: "GSC 洞察",
-    icon: GoogleGlyphMuted,
-  },
-  {
     to: "/p/$projectId/domain" as const,
-    label: "域名概览",
+    label: "Domain overview",
     icon: Globe,
   },
   {
-    to: "/p/$projectId/backlinks" as const,
-    label: "外链分析",
-    icon: Link2,
-  },
-  {
-    to: "/p/$projectId/audit" as const,
-    label: "网站审计",
-    icon: ClipboardCheck,
-  },
-  {
     to: "/p/$projectId/brand-lookup" as const,
-    label: "品牌分析",
+    label: "Competitor analysis",
     icon: Sparkles,
   },
   {
+    to: "/p/$projectId/backlinks" as const,
+    label: "Backlinks & checks",
+    icon: Link2,
+  },
+  {
+    to: "/p/$projectId/rank-tracking" as const,
+    label: "Rank tracking",
+    icon: TrendingUp,
+  },
+  {
     to: "/p/$projectId/prompt-explorer" as const,
-    label: "Prompt 探索",
+    label: "AI prompt tracking",
     icon: MessageSquare,
+  },
+  {
+    to: "/p/$projectId/search-performance" as const,
+    label: "Search performance",
+    icon: GoogleGlyphMuted,
+  },
+  {
+    to: "/p/$projectId/audit" as const,
+    label: "Site audit",
+    icon: ClipboardCheck,
   },
 ] as const;
 
@@ -107,27 +107,36 @@ export function getProjectNavGroups(projectId: string) {
 
   return [
     {
-      label: "概览",
+      label: "Overview",
       items: [byPath("/p/$projectId")],
     },
     {
-      label: "深度调研",
+      label: "Keyword research",
       items: [
         byPath("/p/$projectId/keywords"),
+        byPath("/p/$projectId/saved"),
         byPath("/p/$projectId/domain"),
-        byPath("/p/$projectId/backlinks"),
-        byPath("/p/$projectId/brand-lookup"),
-        byPath("/p/$projectId/prompt-explorer"),
       ],
     },
     {
-      label: "我的站点",
+      label: "Competitive analysis",
+      items: [byPath("/p/$projectId/brand-lookup")],
+    },
+    {
+      label: "Backlinks",
+      items: [byPath("/p/$projectId/backlinks")],
+    },
+    {
+      label: "Rank tracking & AI visibility",
       items: [
-        byPath("/p/$projectId/search-performance"),
         byPath("/p/$projectId/rank-tracking"),
-        byPath("/p/$projectId/saved"),
-        byPath("/p/$projectId/audit"),
+        byPath("/p/$projectId/prompt-explorer"),
+        byPath("/p/$projectId/search-performance"),
       ],
+    },
+    {
+      label: "Site health",
+      items: [byPath("/p/$projectId/audit")],
     },
   ];
 }

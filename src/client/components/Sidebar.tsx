@@ -32,17 +32,20 @@ interface SidebarProps {
 
 const navItemBaseClass =
   "relative flex items-center gap-2.5 rounded-md px-3 py-1.5 text-sm text-base-content/70";
-
-// Hover uses a lighter tint than the active background (bg-base-300/50) so a
-// hovered item next to the active one stays visually distinct instead of
-// merging into a single block.
 const navItemClass = `${navItemBaseClass} transition-colors hover:bg-base-300/30 hover:text-base-content`;
-
 const navItemActiveProps = {
-  // Keep the active tint on hover so the active item does not fall back to the
-  // lighter hover background of navItemClass.
   className:
     "bg-base-300/50 hover:bg-base-300/50 font-medium text-base-content",
+};
+
+type SidebarNavItem = LinkOptions & {
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+};
+
+type SidebarNavGroup = {
+  label: string;
+  items: readonly SidebarNavItem[];
 };
 
 function SidebarNavLink({
@@ -77,22 +80,71 @@ function SidebarNavLink({
   );
 }
 
+function SidebarNavGroup({
+  group,
+  collapsed,
+  onToggle,
+  onNavigate,
+}: {
+  group: SidebarNavGroup;
+  collapsed: boolean;
+  onToggle: () => void;
+  onNavigate?: () => void;
+}) {
+  return (
+    <div className="mb-1">
+      <button
+        type="button"
+        className="flex w-full items-center justify-between px-3 pb-1 pt-3 text-left text-[11px] font-semibold uppercase tracking-wider text-base-content/45"
+        aria-expanded={!collapsed}
+        onClick={onToggle}
+      >
+        <span>{group.label}</span>
+        <span
+          aria-hidden
+          className={`text-xs transition-transform ${collapsed ? "-rotate-90" : ""}`}
+        >
+          ⌄
+        </span>
+      </button>
+      {!collapsed
+        ? group.items.map(({ icon, label, ...linkProps }) => (
+            <SidebarNavLink
+              key={`${String(linkProps.to)}-${label}`}
+              icon={icon}
+              label={label}
+              onNavigate={onNavigate}
+              linkProps={linkProps}
+            />
+          ))
+        : null}
+    </div>
+  );
+}
+
 export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
-  const navGroups = [
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const toggleGroup = (label: string) => {
+    setCollapsedGroups((current) => {
+      const next = new Set(current);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  };
+  const navGroups: SidebarNavGroup[] = [
     ...(projectId ? getProjectNavGroups(projectId) : []),
     connectNavGroup,
   ];
   const navigate = useNavigate();
   const location = useLocation();
   const onSamRoute = location.pathname.includes("/sam");
-
-  // PostHog-style sidebar tabs: Browse shows the regular nav, Chat shows the
-  // SAM chat history. The tab is view state (switching to Browse leaves the
-  // conversation open in the content panel), but the route wins: landing on
-  // /sam selects Chat, navigating anywhere else flips back to Browse.
   const [view, setView] = useState<"browse" | "chat">(
     onSamRoute ? "chat" : "browse",
   );
+
   useEffect(() => {
     setView(onSamRoute ? "chat" : "browse");
   }, [onSamRoute]);
@@ -110,8 +162,6 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
     }
   };
 
-  // Coming back from Chat, land on the dashboard rather than leaving the
-  // conversation filling the content panel next to a Browse nav.
   const openBrowse = () => {
     setView("browse");
     if (!projectId || !onSamRoute) return;
@@ -149,8 +199,6 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
       </div>
 
       {projectId ? (
-        // Same underline tab idiom as the in-page tab strips (e.g. Domain
-        // Overview's Top Keywords / Top Pages).
         <div className="px-3 pb-1">
           <div role="tablist" className="tabs tabs-border w-full">
             <SidebarViewTab
@@ -174,23 +222,13 @@ export function Sidebar({ projectId, onNavigate, onClose }: SidebarProps) {
       ) : (
         <nav className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
           {navGroups.map((group) => (
-            <div key={group.label} className="mb-1">
-              <div className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-base-content/40">
-                {group.label}
-              </div>
-              {group.items.map((item) => {
-                const { icon, label, ...linkProps } = item;
-                return (
-                  <SidebarNavLink
-                    key={linkProps.to}
-                    icon={icon}
-                    label={label}
-                    onNavigate={onNavigate}
-                    linkProps={linkProps}
-                  />
-                );
-              })}
-            </div>
+            <SidebarNavGroup
+              key={group.label}
+              group={group}
+              collapsed={collapsedGroups.has(group.label)}
+              onToggle={() => toggleGroup(group.label)}
+              onNavigate={onNavigate}
+            />
           ))}
         </nav>
       )}

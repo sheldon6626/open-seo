@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SearchPerformancePage } from "@/client/features/search-performance/SearchPerformancePage";
+import { SearchPerformanceWithAnalytics } from "@/client/features/search-performance/SearchPerformanceWithAnalytics";
 
 export const Route = createFileRoute(
   "/_project/p/$projectId/search-performance",
@@ -9,5 +9,5 @@ export const Route = createFileRoute(
 
 function SearchPerformanceRoute() {
   const { projectId } = Route.useParams();
-  return <SearchPerformancePage projectId={projectId} />;
+  return <SearchPerformanceWithAnalytics projectId={projectId} />;
 }
